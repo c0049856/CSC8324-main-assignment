@@ -1,0 +1,63 @@
+# A simple Michaelis-Menten enzymatic reaction
+begin parameters
+	c1		1.661e-3
+	c1r		1e-4
+	c2		0.1
+end parameters
+
+
+begin seed species
+	Ru5P(a)			301
+	Rpi(a)			120
+	R5P(a)			301
+	RibA(a)			120
+	D2B4P(a)		301
+	RibH(a)			120
+	D8RL(a)			301
+	RibE(a)			120
+	Riboflavin(a)	0
+	RibC(a,b)		120
+	FMN(a)			0
+	FAD(a)			0
+end seed species
+
+
+# the actual reactions
+begin reaction rules
+# Binding and dissociation
+	Ru5P(a) + Rpi(a) <-> Ru5P(a!1).Rpi(a!1)	c1, c1r
+	# Production
+	Ru5P(a!1).Rpi(a!1) -> R5P(a) + Rpi(a)	c2
+	# Binding and dissociation
+	R5P(a) + RibA(a) <-> R5P(a!1).RibA(a!1)	c1, c1r
+	# Production
+	R5P(a!1).RibA(a!1) -> D2B4P(a) + RibA(a)	c2
+	# Binding and dissociation
+	D2B4P(a) + RibH(a) <-> D2B4P(a!1).RibH(a!1)	c1, c1r
+	# Production
+	D2B4P(a!1).RibH(a!1) -> D8RL(a) + RibH(a)	c2
+	# Binding and dissociation
+	D8RL(a) + RibE(a) <-> D8RL(a!1).RibE(a!1)	c1, c1r
+	# Production
+	D8RL(a!1).RibE(a!1) -> Riboflavin(a) + RibE(a)	c2
+	# Binding and dissociation
+	Riboflavin(a) + RibC(a,b) <-> Riboflavin(a!1).RibC(a!1,b)	c1, c1r
+	# Production
+	Riboflavin(a!1).RibC(a!1,b) -> FMN(a) + RibC(a,b)	c2
+	# Binding and dissociation
+	FMN(a) + RibC(a,b) <-> FMN(a!1).RibC(b!1,a)	c1, c1r
+	# Production
+	FMN(a!1).RibC(b!1,a) -> FAD(a) + RibC(a,b)	c2
+end reaction rules
+
+
+begin observables
+	Molecules	Riboflavin		Riboflavin(a)
+	Molecules	FMN		FMN(a)
+	Molecules	FAD		FAD(a)
+end observables
+
+## actions ##
+generate_network({overwrite=>1})
+
+simulate_ssa({t_end=>300,n_steps=>3000})

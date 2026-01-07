@@ -1,0 +1,62 @@
+# A simple Michaelis-Menten enzymatic reaction
+begin parameters
+	c1		1.661e-3
+	c1r		1e-4
+	c2		0.1
+end parameters
+
+#to calculate the k1 for stochastic, we need conversion formula 
+# c = k/ Na x V 
+# we only convert forward reaction, because it depends on volume 
+# c (k1) = 10+6/ 6.022x10+23 x 10-15 = 10+6/6.022x10+8 = 0.00166057 = 1.661 x 10-3
+#reverse rate and catalytic rate are unimolecular reactions and 
+# do not depend on volume, hence they remain the same. 
+
+begin seed species
+	R5P(a)			301
+	RibA(a)			120
+	D2B4P(a)		301
+	RibH(a)			120
+	D8RL(a)			301
+	RibE(a)			120
+	Riboflavin(a)	0
+end seed species
+#to calculate the stochastic concentrations we will use N = [C] x Na x V
+# so the calculations for N(s) = 5 x 10-7 x 6.022 x10+23 x 10-15 = 301.1
+# N(e) = 120.44
+
+
+# the actual reactions
+begin reaction rules
+	# Binding and dissociation
+	R5P(a) + RibA(a) <-> R5P(a!1).RibA(a!1)	c1, c1r
+	# Production
+	R5P(a!1).RibA(a!1) -> D2B4P(a) + RibA(a)	c2
+	# Binding and dissociation
+	D2B4P(a) + RibH(a) <-> D2B4P(a!1).RibH(a!1)	c1, c1r
+	# Production
+	D2B4P(a!1).RibH(a!1) -> D8RL(a) + RibH(a)	c2
+	# Binding and dissociation
+	D8RL(a) + RibE(a) <-> D8RL(a!1).RibE(a!1)	c1, c1r
+	# Production
+	D8RL(a!1).RibE(a!1) -> Riboflavin(a) + RibE(a)	c2
+end reaction rules
+
+
+begin observables
+	Molecules	RibA		RibA(a)
+	Molecules	RibH		RibH(a)
+	Molecules	RibE		RibE(a)
+	Molecules	R5P			R5P(a)
+	Molecules	D2B4P	D2B4P(a)
+	Molecules	DBRL	D8RL(a)
+	Molecules	Riboflavin	Riboflavin(a)
+	Molecules	R5P_RibA		R5P(a!1).RibA(a!1)
+	Molecules	D2B4P_RibH		D2B4P(a!1).RibH(a!1)
+	Molecules	D8RL_RibE		D8RL(a!1).RibE(a!1)
+end observables
+
+## actions ##
+generate_network({overwrite=>1})
+
+simulate_ssa({t_end=>150,n_steps=>1000})
