@@ -1,1 +1,1 @@
-This folder is for coding documents from Antimony practical. 
+This folder is for coding scripts from Antimony practical (Practical 4). 
