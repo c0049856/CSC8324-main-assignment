@@ -1,5 +1,7 @@
 ### Notes 
 Hello! 
 This repository is full of coding scripts from various practicals for the final report of CSC8324 main assignment. I did not want to add the codes in the report itself due to possibility of running low on words, hence I have decided to put all the scripts in here. 
+
 Thank you for a great module and I do hope our paths cross some time in the future! 
+
 P.S. please do not mind the different username in some of the assignments, I had to create another GitHub account as the previous one could not connect to the Computing School'd GitHub. 
