@@ -4,4 +4,4 @@ This repository is full of coding scripts from various practicals for the final 
 
 Thank you for a great module and I do hope our paths cross some time in the future! 
 
-P.S. please do not mind the different username in some of the assignments, I had to create another GitHub account as the previous one could not connect to the Computing School'd GitHub. 
+P.S. please do not mind the different username in some of the assignments, I had to create another GitHub account as the previous one could not connect to the Computing School's GitHub. 
